@@ -1,0 +1,5 @@
+requests>=2.31.0
+questionary>=2.0.1
+rich>=13.7.0
+PyGithub>=2.3.0
+python-dotenv>=1.0.0

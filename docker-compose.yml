@@ -1,0 +1,49 @@
+services:
+  # Interactive CLI: pick a plugin, mirror it to GitHub Releases, regenerate
+  # updatePlugins.xml. Run with:
+  #   docker compose run --rm cli
+  cli:
+    build:
+      context: .
+      dockerfile: docker/cli.Dockerfile
+    image: jb-marketplace-cli
+    env_file: .env
+    volumes:
+      - ./cli:/workspace/cli:ro
+      - ./plugins.json:/workspace/plugins.json
+      - ./public:/workspace/public
+    stdin_open: true
+    tty: true
+    profiles: ["cli"]
+
+  # Public webserver: serves /updatePlugins.xml so IntelliJ can read the
+  # custom repository.
+  #
+  # Modes (set LOCAL_CACHE in .env):
+  #   LOCAL_CACHE=false → IntelliJ downloads plugin binaries directly from
+  #                       GitHub Releases (low storage, external traffic).
+  #   LOCAL_CACHE=true  → on container start, all plugin assets listed in
+  #                       plugins.json are pulled into the `plugin-cache`
+  #                       volume and served from /plugins/<file> by nginx.
+  #                       First start is slow; subsequent restarts reuse
+  #                       cached files.
+  server:
+    build:
+      context: .
+      dockerfile: docker/server.Dockerfile
+    image: jb-marketplace-server
+    ports:
+      - "8080:80"
+    environment:
+      LOCAL_CACHE: "${LOCAL_CACHE:-false}"
+      PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:-}"
+    volumes:
+      - ./plugins.json:/srv/plugins.json:ro
+      - plugin-cache:/srv/static
+    restart: unless-stopped
+
+volumes:
+  # Holds the generated updatePlugins.xml, the seeded index.html, and (in
+  # LOCAL_CACHE mode) all downloaded plugin .zip/.jar files. Surviving the
+  # volume between restarts avoids re-downloading on every `compose up`.
+  plugin-cache:
