@@ -1,3 +1,32 @@
 {
-  "plugins": []
+  "plugins": [
+    {
+      "plugin_xml_id": "com.github.copilot",
+      "plugin_id": 17718,
+      "name": "GitHub Copilot - Your AI Pair Programmer",
+      "vendor": {
+        "name": "GitHub",
+        "isVerified": true
+      },
+      "version": "1.10.0-251",
+      "since_build": "251.25410",
+      "until_build": null,
+      "download_url": "https://github.com/jasondevj/jetbrain-custom-marketplace/releases/download/plugin/com.github.copilot%401.10.0-251/github-copilot-intellij-1.10.0-251.zip",
+      "filename": "github-copilot-intellij-1.10.0-251.zip"
+    },
+    {
+      "plugin_xml_id": "com.github.copilot.appmod",
+      "plugin_id": 28791,
+      "name": "GitHub Copilot modernization",
+      "vendor": {
+        "name": "Microsoft Corporation",
+        "isVerified": true
+      },
+      "version": "1.10.0",
+      "since_build": "243.0",
+      "until_build": null,
+      "download_url": "https://github.com/jasondevj/jetbrain-custom-marketplace/releases/download/plugin/com.github.copilot.appmod%401.10.0/appmod-intellij-20260511.1.zip",
+      "filename": "appmod-intellij-20260511.1.zip"
+    }
+  ]
 }
